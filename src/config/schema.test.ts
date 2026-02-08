@@ -6,8 +6,11 @@ describe("config schema", () => {
     const res = buildConfigSchema();
     const schema = res.schema as { properties?: Record<string, unknown> };
     expect(schema.properties?.gateway).toBeTruthy();
+    expect(schema.properties?.hygh).toBeTruthy();
     expect(schema.properties?.agents).toBeTruthy();
     expect(res.uiHints.gateway?.label).toBe("Gateway");
+    expect(res.uiHints.hygh?.label).toBe("HYGH");
+    expect(res.uiHints["hygh.employeeMode"]?.label).toBe("HYGH Employee Mode");
     expect(res.uiHints["gateway.auth.token"]?.sensitive).toBe(true);
     expect(res.version).toBeTruthy();
     expect(res.generatedAt).toBeTruthy();

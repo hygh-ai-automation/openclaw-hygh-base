@@ -12,6 +12,7 @@ import type {
   TalkConfig,
 } from "./types.gateway.js";
 import type { HooksConfig } from "./types.hooks.js";
+import type { HyghConfig } from "./types.hygh.js";
 import type { MemoryConfig } from "./types.memory.js";
 import type {
   AudioConfig,
@@ -92,6 +93,7 @@ export type OpenClawConfig = {
   channels?: ChannelsConfig;
   cron?: CronConfig;
   hooks?: HooksConfig;
+  hygh?: HyghConfig;
   discovery?: DiscoveryConfig;
   canvasHost?: CanvasHostConfig;
   talk?: TalkConfig;

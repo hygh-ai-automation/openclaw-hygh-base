@@ -62,6 +62,7 @@ const GROUP_LABELS: Record<string, string> = {
   session: "Session",
   cron: "Cron",
   hooks: "Hooks",
+  hygh: "HYGH",
   ui: "UI",
   browser: "Browser",
   talk: "Talk",
@@ -89,6 +90,7 @@ const GROUP_ORDER: Record<string, number> = {
   session: 90,
   cron: 100,
   hooks: 110,
+  hygh: 115,
   ui: 120,
   browser: 130,
   talk: 140,
@@ -133,6 +135,7 @@ const FIELD_LABELS: Record<string, string> = {
   "gateway.remote.tlsFingerprint": "Remote Gateway TLS Fingerprint",
   "gateway.auth.token": "Gateway Token",
   "gateway.auth.password": "Gateway Password",
+  "hygh.employeeMode": "HYGH Employee Mode",
   "tools.media.image.enabled": "Enable Image Understanding",
   "tools.media.image.maxBytes": "Image Understanding Max Bytes",
   "tools.media.image.maxChars": "Image Understanding Max Chars",
@@ -762,6 +765,8 @@ const FIELD_HELP: Record<string, string> = {
     "Optional PluralKit token for resolving private systems or members.",
   "channels.slack.dm.policy":
     'Direct message access control ("pairing" recommended). "open" requires channels.slack.dm.allowFrom=["*"].',
+  "hygh.employeeMode":
+    "Enable HYGH employee deployment hardening (Slack Socket Mode only, explicit loopback/tailnet bind, and Control UI disabled).",
 };
 
 const FIELD_PLACEHOLDERS: Record<string, string> = {

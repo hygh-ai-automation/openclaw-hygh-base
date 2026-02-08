@@ -1,0 +1,29 @@
+{
+  "$schema": "https://railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "pnpm start",
+    "restartPolicyType": "ON_FAILURE"
+  },
+  "services": [
+    {
+      "name": "openclaw-hygh",
+      "variables": {
+        "SLACK_APP_TOKEN": {
+          "description": "The Socket Token (starts with xapp-)",
+          "required": true
+        },
+        "SLACK_BOT_TOKEN": {
+          "description": "The Bot Token (starts with xoxb-)",
+          "required": true
+        },
+        "GEMINI_API_KEY": {
+          "description": "Our Company Shared AI Key",
+          "required": true
+        }
+      }
+    }
+  ]
+}

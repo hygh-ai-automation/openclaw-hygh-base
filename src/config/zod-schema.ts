@@ -309,6 +309,12 @@ export const OpenClawSchema = z
       })
       .strict()
       .optional(),
+    hygh: z
+      .object({
+        employeeMode: z.boolean().optional(),
+      })
+      .strict()
+      .optional(),
     web: z
       .object({
         enabled: z.boolean().optional(),
@@ -597,6 +603,67 @@ export const OpenClawSchema = z
   })
   .strict()
   .superRefine((cfg, ctx) => {
+    if (cfg.hygh?.employeeMode) {
+      const slack = cfg.channels?.slack;
+      if (!slack) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["channels", "slack"],
+          message: "hygh.employeeMode=true requires channels.slack to be configured.",
+        });
+      } else {
+        const baseMode = slack.mode ?? "socket";
+        if (baseMode !== "socket") {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["channels", "slack", "mode"],
+            message: 'hygh.employeeMode=true requires channels.slack.mode="socket".',
+          });
+        }
+        if (slack.accounts) {
+          for (const [accountId, account] of Object.entries(slack.accounts)) {
+            if (!account || account.enabled === false) {
+              continue;
+            }
+            const mode = account.mode ?? baseMode;
+            if (mode !== "socket") {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["channels", "slack", "accounts", accountId, "mode"],
+                message: 'hygh.employeeMode=true requires channels.slack.accounts.*.mode="socket".',
+              });
+            }
+          }
+        }
+      }
+
+      const bind = cfg.gateway?.bind;
+      if (bind && bind !== "loopback" && bind !== "tailnet") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["gateway", "bind"],
+          message:
+            'hygh.employeeMode=true only allows gateway.bind="loopback" or "tailnet" (no public bind).',
+        });
+      }
+      if (!bind) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["gateway", "bind"],
+          message:
+            'hygh.employeeMode=true requires explicit gateway.bind ("loopback" recommended).',
+        });
+      }
+
+      if (cfg.gateway?.controlUi?.enabled !== false) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["gateway", "controlUi", "enabled"],
+          message: "hygh.employeeMode=true requires gateway.controlUi.enabled=false.",
+        });
+      }
+    }
+
     const agents = cfg.agents?.list ?? [];
     if (agents.length === 0) {
       return;

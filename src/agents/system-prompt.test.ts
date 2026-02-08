@@ -2,6 +2,16 @@ import { describe, expect, it } from "vitest";
 import { buildAgentSystemPrompt, buildRuntimeLine } from "./system-prompt.js";
 
 describe("buildAgentSystemPrompt", () => {
+  it("includes HYGH assistant identity and operating standard", () => {
+    const prompt = buildAgentSystemPrompt({
+      workspaceDir: "/tmp/openclaw",
+    });
+
+    expect(prompt).toContain('You are "The HYGH AI Automation Assistant"');
+    expect(prompt).toContain("## HYGH Operating Standard");
+    expect(prompt).toContain("Escalation:");
+  });
+
   it("includes owner numbers when provided", () => {
     const prompt = buildAgentSystemPrompt({
       workspaceDir: "/tmp/openclaw",
@@ -98,7 +108,7 @@ describe("buildAgentSystemPrompt", () => {
       workspaceDir: "/tmp/openclaw",
     });
 
-    expect(prompt).toContain("## OpenClaw CLI Quick Reference");
+    expect(prompt).toContain("## HYGH Runtime CLI Quick Reference");
     expect(prompt).toContain("openclaw gateway restart");
     expect(prompt).toContain("Do not invent commands");
   });
@@ -129,9 +139,9 @@ describe("buildAgentSystemPrompt", () => {
     expect(prompt).toContain(
       "- If exactly one skill clearly applies: read its SKILL.md at <location> with `Read`, then follow it.",
     );
-    expect(prompt).toContain("OpenClaw docs: /tmp/openclaw/docs");
+    expect(prompt).toContain("HYGH agent docs (OpenClaw fork): /tmp/openclaw/docs");
     expect(prompt).toContain(
-      "For OpenClaw behavior, commands, config, or architecture: consult local docs first.",
+      "For HYGH/OpenClaw behavior, commands, config, or architecture: consult local docs first.",
     );
   });
 
@@ -142,9 +152,9 @@ describe("buildAgentSystemPrompt", () => {
     });
 
     expect(prompt).toContain("## Documentation");
-    expect(prompt).toContain("OpenClaw docs: /tmp/openclaw/docs");
+    expect(prompt).toContain("HYGH agent docs (OpenClaw fork): /tmp/openclaw/docs");
     expect(prompt).toContain(
-      "For OpenClaw behavior, commands, config, or architecture: consult local docs first.",
+      "For HYGH/OpenClaw behavior, commands, config, or architecture: consult local docs first.",
     );
   });
 
@@ -247,7 +257,7 @@ describe("buildAgentSystemPrompt", () => {
       toolNames: ["gateway", "exec"],
     });
 
-    expect(prompt).toContain("## OpenClaw Self-Update");
+    expect(prompt).toContain("## HYGH Runtime Self-Update");
     expect(prompt).toContain("config.apply");
     expect(prompt).toContain("update.run");
   });
